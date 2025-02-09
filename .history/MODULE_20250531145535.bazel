@@ -1,0 +1,98 @@
+###############################################################################
+# Bazel now uses Bzlmod by default to manage external dependencies.
+# Please consider migrating your external dependencies from WORKSPACE to MODULE.bazel.
+#
+# For more details, please check https://github.com/bazelbuild/bazel/issues/18958
+###############################################################################
+
+module(name = "driving", version = "0.1.0")
+
+# Hedron's Compile Commands Extractor for Bazel
+archive_override(
+    module_name = "hedron_compile_commands",
+    urls = [
+        "https://github.com/hedronvision/bazel-compile-commands-extractor/archive/4f28899228fb3ad0126897876f147ca15026151e.tar.gz",
+    ],
+    strip_prefix = "bazel-compile-commands-extractor-4f28899228fb3ad0126897876f147ca15026151e",
+)
+
+# GoogleTest
+bazel_dep(name = "googletest", version = "1.11.0")
+git_override(
+    module_name = "googletest",
+    remote = "https://github.com/google/googletest",
+    commit = "1b18723e874b256c1e39378c6774a90701d70f7a",
+)
+
+# glog
+bazel_dep(name = "glog", version = "0.5.0")
+git_override(
+    module_name = "glog",
+    remote = "https://github.com/google/glog.git",
+    tag = "v0.5.0",
+)
+
+# abseil-cpp
+bazel_dep(name = "abseil-cpp", version = "20211102.0")
+git_override(
+    module_name = "abseil-cpp",
+    remote = "https://github.com/abseil/abseil-cpp.git",
+    tag = "20211102.0",
+)
+
+# benchmark
+bazel_dep(name = "benchmark", version = "1.5.1")
+git_override(
+    module_name = "benchmark",
+    remote = "https://github.com/google/benchmark.git",
+    tag = "v1.5.1",
+)
+
+# gflags
+bazel_dep(name = "gflags", version = "2.2.2")
+git_override(
+    module_name = "gflags",
+    remote = "https://github.com/gflags/gflags.git",
+    tag = "v2.2.2",
+)
+
+# rules_go
+bazel_dep(name = "rules_go", version = "0.39.1")
+
+# gazelle
+archive_override(
+    module_name = "bazel-gazelle",
+    urls = [
+        "https://github.com/bazelbuild/bazel-gazelle/releases/download/v0.30.0/bazel-gazelle-v0.30.0.tar.gz",
+    ],
+    strip_prefix = "bazel-gazelle-v0.30.0",
+)
+
+# protobuf
+bazel_dep(name = "protobuf", version = "3.19.4")
+archive_override(
+    module_name = "protobuf",
+    urls = [
+        "https://github.com/protocolbuffers/protobuf/archive/v3.19.4.tar.gz",
+    ],
+    strip_prefix = "protobuf-3.19.4",
+)
+
+# buildtools
+bazel_dep(name = "buildtools", version = "4.2.2")
+archive_override(
+    module_name = "buildtools",
+    urls = [
+        "https://github.com/bazelbuild/buildtools/archive/refs/tags/4.2.2.tar.gz",
+    ],
+    strip_prefix = "buildtools-4.2.2",
+)
+
+# eigen3 (manual override, as it's not a Bazel module)
+archive_override(
+    module_name = "eigen3",
+    urls = ["https://gitlab.com/libeigen/eigen/-/archive/3.4-rc1/eigen-3.4-rc1.zip"],
+    strip_prefix = "eigen-3.4-rc1",
+    patches = [],
+    build_file = "//:eigen3.BUILD",
+)

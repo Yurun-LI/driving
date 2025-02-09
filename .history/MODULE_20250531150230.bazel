@@ -1,0 +1,26 @@
+###############################################################################
+# Bazel now uses Bzlmod by default to manage external dependencies.
+# Please consider migrating your external dependencies from WORKSPACE to MODULE.bazel.
+#
+# For more details, please check https://github.com/bazelbuild/bazel/issues/18958
+###############################################################################
+
+module(name = "driving", version = "0.0.1")
+
+# Hedron's Compile Commands Extractor for Bazel
+archive_override(
+    module_name = "hedron_compile_commands",
+    urls = [
+        "https://github.com/hedronvision/bazel-compile-commands-extractor/archive/4f28899228fb3ad0126897876f147ca15026151e.tar.gz",
+    ],
+    strip_prefix = "bazel-compile-commands-extractor-4f28899228fb3ad0126897876f147ca15026151e",
+)
+
+# eigen3 (manual override, as it's not a Bazel module)
+archive_override(
+    module_name = "eigen3",
+    urls = ["https://gitlab.com/libeigen/eigen/-/archive/3.4-rc1/eigen-3.4-rc1.zip"],
+    strip_prefix = "eigen-3.4-rc1",
+    patches = [],
+    build_file = "//:eigen3.BUILD",
+)
