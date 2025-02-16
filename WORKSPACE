@@ -1,4 +1,5 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 # Hedron's Compile Commands Extractor for Bazel
 # https://github.com/hedronvision/bazel-compile-commands-extractor
@@ -27,8 +28,6 @@ hedron_compile_commands_setup_transitive_transitive()
 load("@hedron_compile_commands//:workspace_setup_transitive_transitive_transitive.bzl", "hedron_compile_commands_setup_transitive_transitive_transitive")
 
 hedron_compile_commands_setup_transitive_transitive_transitive()
-
-load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 git_repository(
     name = "com_google_googletest",
@@ -118,4 +117,11 @@ http_archive(
     urls = [
         "https://github.com/bazelbuild/buildtools/archive/refs/tags/4.2.2.tar.gz",
     ],
+)
+
+http_archive(
+    name = "eigen3",
+    urls = ["https://gitlab.com/libeigen/eigen/-/archive/3.4-rc1/eigen-3.4-rc1.zip"],
+    sha256 = "f4abd971af2d8a52c54041651398f181daca76cf5d4bd41b70eb41b8f7f75772",
+    build_file = "//:eigen3.BUILD",
 )
