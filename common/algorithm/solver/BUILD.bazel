@@ -5,7 +5,10 @@ cc_library(
     deps = [
         "//common/algorithm/solver:solver",
         "//common/math:vec",
+        "//common/proto:grid_search_cc_proto",
         "@glog//:glog",  # glog dependency
+        "@gflags//:gflags",  # gflags dependency
+        "//common:flags",
     ],
     includes = ["."],
     visibility = ["//visibility:public"],

@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package common.algorithm.proto;
+
+// A single grid coordinate
+message GridCoord {
+  int32 x = 1;
+  int32 y = 2;
+}
+
+message Node {
+  GridCoord coord = 1; // The grid coordinate of the node
+  float g_cost = 2;    // Cost from start to this node
+  float h_cost = 3;    // Heuristic cost to goal
+}
+
+// A* search visualization data
+message AStarSearchOutput {
+  repeated Node expanded_nodes = 1; // All expanded grid cells
+  repeated GridCoord obstacle_coords = 2; // All obstacle grid cells
+  repeated GridCoord path_coords = 3;     // Final path grid cells
+  GridCoord start_coord = 4;                   // Start cell
+  GridCoord final_coord = 5;                    // Goal cell
+}

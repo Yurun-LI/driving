@@ -1,0 +1,13 @@
+load("@rules_proto//proto:defs.bzl", "proto_library")
+
+proto_library(
+    name = "grid_search_proto",
+    srcs = ["grid_search.proto"],
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "grid_search_cc_proto",
+    deps = [":grid_search_proto"],
+    visibility = ["//visibility:public"],
+)
