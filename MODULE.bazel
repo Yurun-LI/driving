@@ -7,6 +7,7 @@ module(
 
 # Bazel dependencies for the Driving project
 bazel_dep(name = "rules_python", version = "0.32.2")
+bazel_dep(name = "glog", version = "0.6.0")
 
 # Hedron's Compile Commands Extractor for Bazel
 # https://github.com/hedronvision/bazel-compile-commands-extractor

@@ -1,3 +1,7 @@
+// Author: Yurun-LI
+// Date: 2025-05-31
+// Description: Math constants for geometry and numerical computation.
+
 #pragma once
 #include <limits>
 
