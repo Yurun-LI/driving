@@ -7,7 +7,11 @@ namespace GraphSearch {
 struct Pose {
   enum Gear {
     kForward = 1,
+<<<<<<< HEAD
     kBackward = 2,
+=======
+    kBackward = -1,
+>>>>>>> 453f7436150763c8689ba1876935b1e6f43e9e80
   };
   double x = 0.0;
   double y = 0.0;
