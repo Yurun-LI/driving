@@ -1,0 +1,11 @@
+# Ignore everything
+*
+
+# But not these files/folders:
+!.gitignore
+!.clang-format
+!LICENSE
+!MODULE.bazel
+!common/
+!pnc/
+!test/

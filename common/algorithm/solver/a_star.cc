@@ -35,10 +35,22 @@ AStar::AStar(const math::Vec2i& start, const math::Vec2i& final,
     obstacles_.insert(GridCoord(obs.x, obs.y));
   }
   path_.clear();
+  open_list_ = OpenList();
   all_nodes_list_.reserve(kGridSize);
   all_nodes_list_.emplace_back(start_, 0, ComputeHeuristic(start_), nullptr);
   open_list_.emplace(&all_nodes_list_.back());
   visited_node_ptr_map_.clear();
+
+  // debug
+  if (fLB::FLAGS_debug_search_solver) {
+    a_star_output_.mutable_start_coord()->CopyFrom(start_.ToProto());
+    a_star_output_.mutable_final_coord()->CopyFrom(final_.ToProto());
+    for (const auto& obs : obstacles_) {
+      a_star_output_.add_obstacle_coords()->CopyFrom(obs.ToProto());
+    }
+    a_star_output_.add_expanded_nodes()->CopyFrom(
+        all_nodes_list_.back().ToProto());
+  }
 }
 
 AStar::~AStar() = default;
@@ -57,10 +69,7 @@ double AStar::ComputeHeuristic(const GridCoord& coord) const {
 }
 
 void AStar::GetSolution() const {
-  for (const auto& state : path_) {
-    printf("(%d, %d) ", state.x, state.y);
-  }
-  printf("\n");
+  return;
 }
 
 const std::vector<GridCoord>& AStar::GetPath() const {
@@ -75,11 +84,6 @@ bool AStar::NodeCmp::operator()(const Node* a, const Node* b) const {
 }
 
 void AStar::RunAStar() {
-  open_list_ = OpenList();
-  visited_node_ptr_map_.clear();
-  all_nodes_list_.reserve(kGridSize);
-  all_nodes_list_.emplace_back(start_, 0, ComputeHeuristic(start_), nullptr);
-  open_list_.emplace(&all_nodes_list_.back());
   while (!open_list_.empty()) {
     Node* curr_node_ptr = open_list_.top();
     open_list_.pop();
@@ -107,6 +111,11 @@ void AStar::RunAStar() {
         all_nodes_list_.emplace_back(next_coord, next_g_cost, next_h_cost,
                                      curr_node_ptr);
         open_list_.emplace(&all_nodes_list_.back());
+        if (fLB::FLAGS_debug_search_solver) {
+          a_star_output_.add_expanded_nodes()->CopyFrom(
+              all_nodes_list_.back().ToProto());
+          LOG(ERROR) << "add node: " << all_nodes_list_.back();
+        }
       } else {
         Node* next_node_ptr = it->second;
         if (next_node_ptr->g_cost + next_node_ptr->h_cost >
@@ -115,6 +124,10 @@ void AStar::RunAStar() {
           next_node_ptr->h_cost = next_h_cost;
           next_node_ptr->prev_node = curr_node_ptr;
           open_list_.emplace(next_node_ptr);
+          if (fLB::FLAGS_debug_search_solver) {
+            a_star_output_.add_expanded_nodes()->CopyFrom(
+                next_node_ptr->ToProto());
+          }
         }
       }
     }
@@ -129,6 +142,11 @@ void AStar::BackTrackPath(Node* node_ptr) {
   while (node_ptr) {
     path_.insert(path_.begin(), node_ptr->coord);
     node_ptr = node_ptr->prev_node;
+  }
+  for (const auto& coord : path_) {
+    if (fLB::FLAGS_debug_search_solver) {
+      a_star_output_.add_path_coords()->CopyFrom(coord.ToProto());
+    }
   }
 }
 
